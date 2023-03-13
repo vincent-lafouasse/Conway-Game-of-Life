@@ -12,6 +12,20 @@
 #define DEAD 0
 #define ALIVE 1
 
+void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio) {
+  float random_number;
+  for (int row = 0; row < HEIGHT; row++) {
+    for (int col = 0; col < WIDTH; col++) {
+      random_number = (rand() % 100) / 100.;
+      if (random_number < life_ratio) {
+        cells[row][col] = ALIVE;
+      } else {
+        cells[row][col] = DEAD;
+      }
+    }
+  }
+}
+
 int main(void) {
   const int PIXEL_SIZE = 10;
   const int SCREEN_X_POS = 0;
@@ -19,6 +33,8 @@ int main(void) {
   const int MS_PER_TICK = 1000;
   const int TARGET_FPS = 20;
   const int MS_PER_FRAME = 1000.0 / TARGET_FPS;
+
+  srand(time(NULL));
 
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -40,8 +56,8 @@ int main(void) {
   }
 
   uint8_t cells[HEIGHT][WIDTH] = {DEAD};
-  cells[0][5] = ALIVE;
-  cells[29][5] = ALIVE;
+  float life_ratio = 0.1;
+  randomize_cells(cells, life_ratio);
 
   uint32_t start_tick = SDL_GetTicks();
   uint32_t current_tick;
