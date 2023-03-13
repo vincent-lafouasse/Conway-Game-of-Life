@@ -10,6 +10,28 @@
 #define DEAD 0
 #define ALIVE 1
 
+typedef enum { BLACK, WHITE } Color;
+
+void set_render_color(Color color, SDL_Renderer* renderer) {
+  uint8_t red = 0;
+  uint8_t green = 0;
+  uint8_t blue = 0;
+  uint8_t alpha = 255;
+
+  switch (color) {
+    case BLACK:
+      break;
+    case WHITE:
+      red = 255;
+      green = 255;
+      blue = 255;
+      break;
+    default:
+      break;
+  }
+  SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
+}
+
 void render_cell(int row, int col, int pixel_size, SDL_Renderer* renderer) {
   SDL_Rect cell_rect = {row * pixel_size, col * pixel_size, pixel_size,
                         pixel_size};
@@ -59,11 +81,12 @@ int main(void) {
   cells[0][5] = ALIVE;
   cells[29][5] = ALIVE;
 
-  bool running = true;
   uint32_t start_tick = SDL_GetTicks();
   uint32_t current_tick;
   uint32_t frame_beginning_tick;
   uint32_t frame_end_tick;
+
+  bool running = true;
   while (running) {
     frame_beginning_tick = SDL_GetTicks();
     SDL_Event event;
@@ -73,6 +96,7 @@ int main(void) {
         break;
       }
     }
+
     current_tick = SDL_GetTicks();
     if ((current_tick - start_tick) % MS_PER_TICK != 0) {
       continue;
@@ -80,10 +104,10 @@ int main(void) {
 
     SDL_Log("a frame is passing");
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    set_render_color(BLACK, renderer);
     SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    set_render_color(WHITE, renderer);
     render_cells(cells, PIXEL_SIZE, renderer);
 
     SDL_RenderPresent(renderer);
