@@ -18,6 +18,8 @@ int main(void) {
   const int SCREEN_X_POS = 0;
   const int SCREEN_Y_POS = 0;
   const int MS_PER_TICK = 1000;
+  const int TARGET_FPS = 20;
+  const int MS_PER_FRAME = 1000.0 / TARGET_FPS;
 
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -45,7 +47,10 @@ int main(void) {
   bool running = true;
   uint32_t start_tick = SDL_GetTicks();
   uint32_t current_tick;
+  uint32_t frame_beginning_tick;
+  uint32_t frame_end_tick;
   while (running) {
+    frame_beginning_tick = SDL_GetTicks();
     SDL_Event event;
     if (SDL_PollEvent(&event)) {
       if (event.type == SDL_QUIT) {
@@ -74,6 +79,10 @@ int main(void) {
     }
 
     SDL_RenderPresent(renderer);
+
+    frame_end_tick = SDL_GetTicks();
+    int time_to_wait = MS_PER_FRAME - (frame_end_tick - frame_beginning_tick);
+    SDL_Delay((time_to_wait > 0) * time_to_wait);
   }
 
   SDL_DestroyRenderer(renderer);
