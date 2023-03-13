@@ -7,10 +7,25 @@
 #define WIDTH 30
 #define HEIGHT 30
 
+#define DEAD 0
+#define ALIVE 1
+
 void render_cell(int row, int col, int pixel_size, SDL_Renderer* renderer) {
   SDL_Rect cell_rect = {row * pixel_size, col * pixel_size, pixel_size,
                         pixel_size};
-  SDL_RenderDrawRect(renderer, &cell_rect);
+  SDL_RenderFillRect(renderer, &cell_rect);
+}
+
+void render_cells(uint8_t cells[HEIGHT][WIDTH],
+                  int pixel_size,
+                  SDL_Renderer* renderer) {
+  for (int row = 0; row < HEIGHT; row++) {
+    for (int col = 0; col < WIDTH; col++) {
+      if (cells[row][col] == ALIVE) {
+        render_cell(row, col, pixel_size, renderer);
+      }
+    }
+  }
 }
 
 int main(void) {
@@ -40,9 +55,9 @@ int main(void) {
     exit(EXIT_FAILURE);
   }
 
-  uint8_t cells[HEIGHT][WIDTH] = {false};
-  cells[0][5] = true;
-  cells[29][5] = true;
+  uint8_t cells[HEIGHT][WIDTH] = {DEAD};
+  cells[0][5] = ALIVE;
+  cells[29][5] = ALIVE;
 
   bool running = true;
   uint32_t start_tick = SDL_GetTicks();
@@ -69,14 +84,7 @@ int main(void) {
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
-    for (int row = 0; row < HEIGHT; row++) {
-      for (int col = 0; col < WIDTH; col++) {
-        if (cells[row][col]) {
-          render_cell(row, col, PIXEL_SIZE, renderer);
-        }
-      }
-    }
+    render_cells(cells, PIXEL_SIZE, renderer);
 
     SDL_RenderPresent(renderer);
 
