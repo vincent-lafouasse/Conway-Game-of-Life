@@ -4,13 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "metadata_definitions.h"
 #include "render.h"
-
-#define WIDTH 30
-#define HEIGHT 30
-
-#define DEAD 0
-#define ALIVE 1
 
 void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio);
 void cap_fps(uint32_t frame_beginning_tick, int target_fps);
