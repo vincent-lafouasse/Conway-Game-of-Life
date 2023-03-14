@@ -12,19 +12,8 @@
 #define DEAD 0
 #define ALIVE 1
 
-void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio) {
-  float random_number;
-  for (int row = 0; row < HEIGHT; row++) {
-    for (int col = 0; col < WIDTH; col++) {
-      random_number = (rand() % 100) / 100.;
-      if (random_number < life_ratio) {
-        cells[row][col] = ALIVE;
-      } else {
-        cells[row][col] = DEAD;
-      }
-    }
-  }
-}
+void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio);
+void cap_fps(uint32_t frame_beginning_tick, int target_fps);
 
 int main(void) {
   const int PIXEL_SIZE = 10;
@@ -32,7 +21,6 @@ int main(void) {
   const int SCREEN_Y_POS = 0;
   const int MS_PER_TICK = 1000;
   const int TARGET_FPS = 20;
-  const int MS_PER_FRAME = 1000.0 / TARGET_FPS;
 
   srand(time(NULL));
 
@@ -62,7 +50,6 @@ int main(void) {
   uint32_t start_tick = SDL_GetTicks();
   uint32_t current_tick;
   uint32_t frame_beginning_tick;
-  uint32_t frame_end_tick;
 
   bool running = true;
   while (running) {
@@ -89,14 +76,32 @@ int main(void) {
     render_cells(cells, PIXEL_SIZE, renderer);
 
     SDL_RenderPresent(renderer);
-
-    frame_end_tick = SDL_GetTicks();
-    int time_to_wait = MS_PER_FRAME - (frame_end_tick - frame_beginning_tick);
-    SDL_Delay((time_to_wait > 0) * time_to_wait);
+    cap_fps(frame_beginning_tick, TARGET_FPS);
   }
 
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
   return EXIT_SUCCESS;
+}
+
+void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio) {
+  float random_number;
+  for (int row = 0; row < HEIGHT; row++) {
+    for (int col = 0; col < WIDTH; col++) {
+      random_number = (rand() % 100) / 100.;
+      if (random_number < life_ratio) {
+        cells[row][col] = ALIVE;
+      } else {
+        cells[row][col] = DEAD;
+      }
+    }
+  }
+}
+
+void cap_fps(uint32_t frame_beginning_tick, int target_fps) {
+  int ms_per_frame = 1000.0 / target_fps;
+  uint32_t frame_end_tick = SDL_GetTicks();
+  int time_to_wait = ms_per_frame - (frame_end_tick - frame_beginning_tick);
+  SDL_Delay((time_to_wait > 0) * time_to_wait);
 }
