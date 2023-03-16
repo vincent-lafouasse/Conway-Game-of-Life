@@ -7,37 +7,14 @@
 #include "metadata_definitions.h"
 #include "render.h"
 
-void reset_cells(uint8_t cells[HEIGHT][WIDTH]);
+void set_cells_to_dead(uint8_t cells[HEIGHT][WIDTH]);
 void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio);
 void cap_fps(uint32_t frame_beginning_tick, int target_fps);
-
 void init_SDL(const int width,
               const int height,
               const int pixel_size,
               SDL_Window** return_window,
-              SDL_Renderer** return_renderer) {
-  const int SCREEN_X_POS = 0;
-  const int SCREEN_Y_POS = 0;
-
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-    exit(EXIT_FAILURE);
-  }
-
-  *return_window = SDL_CreateWindow("Conway's Game of Life", SCREEN_X_POS,
-                                    SCREEN_Y_POS, width * pixel_size,
-                                    height * pixel_size, SDL_WINDOW_OPENGL);
-  if (*return_window == NULL) {
-    SDL_Log("Could not create a window: %s", SDL_GetError());
-    exit(EXIT_FAILURE);
-  }
-  *return_renderer =
-      SDL_CreateRenderer(*return_window, -1, SDL_RENDERER_ACCELERATED);
-  if (*return_renderer == NULL) {
-    SDL_Log("Could not create a renderer: %s", SDL_GetError());
-    exit(EXIT_FAILURE);
-  }
-}
+              SDL_Renderer** return_renderer);
 
 int main(void) {
   const int MS_PER_TICK = 1000;
@@ -45,19 +22,21 @@ int main(void) {
 
   srand(time(NULL));
 
-  SDL_Window* window;
-  SDL_Renderer* renderer;
+  SDL_Window* window = NULL;
+  SDL_Renderer* renderer = NULL;
   // defined in metadata header
   init_SDL(WIDTH, HEIGHT, PIXEL_SIZE, &window, &renderer);
 
-  uint8_t cells[HEIGHT][WIDTH] = {DEAD};
-  float life_ratio = 0.1;
-  reset_cells(cells);
+  uint8_t cells[HEIGHT][WIDTH];
+  set_cells_to_dead(cells);
+
+  cells[1][0] = ALIVE;
+  cells[1][1] = ALIVE;
+  cells[1][2] = ALIVE;
 
   uint32_t start_tick = SDL_GetTicks();
   uint32_t current_tick;
   uint32_t frame_beginning_tick;
-
   bool running = true;
   while (running) {
     frame_beginning_tick = SDL_GetTicks();
@@ -70,7 +49,6 @@ int main(void) {
       if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
           case SDLK_SPACE: {
-            randomize_cells(cells, life_ratio);
             break;
           }
           default:
@@ -116,7 +94,7 @@ void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio) {
   }
 }
 
-void reset_cells(uint8_t cells[HEIGHT][WIDTH]) {
+void set_cells_to_dead(uint8_t cells[HEIGHT][WIDTH]) {
   for (int row = 0; row < HEIGHT; row++) {
     for (int col = 0; col < WIDTH; col++) {
       cells[row][col] = DEAD;
@@ -129,4 +107,32 @@ void cap_fps(uint32_t frame_beginning_tick, int target_fps) {
   uint32_t frame_end_tick = SDL_GetTicks();
   int time_to_wait = ms_per_frame - (frame_end_tick - frame_beginning_tick);
   SDL_Delay((time_to_wait > 0) * time_to_wait);
+}
+
+void init_SDL(const int width,
+              const int height,
+              const int pixel_size,
+              SDL_Window** return_window,
+              SDL_Renderer** return_renderer) {
+  const int SCREEN_X_POS = 0;
+  const int SCREEN_Y_POS = 0;
+
+  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+    exit(EXIT_FAILURE);
+  }
+
+  *return_window = SDL_CreateWindow("Conway's Game of Life", SCREEN_X_POS,
+                                    SCREEN_Y_POS, width * pixel_size,
+                                    height * pixel_size, SDL_WINDOW_OPENGL);
+  if (*return_window == NULL) {
+    SDL_Log("Could not create a window: %s", SDL_GetError());
+    exit(EXIT_FAILURE);
+  }
+  *return_renderer =
+      SDL_CreateRenderer(*return_window, -1, SDL_RENDERER_ACCELERATED);
+  if (*return_renderer == NULL) {
+    SDL_Log("Could not create a renderer: %s", SDL_GetError());
+    exit(EXIT_FAILURE);
+  }
 }
