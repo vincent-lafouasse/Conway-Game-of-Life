@@ -9,7 +9,11 @@ An implementation of Conway's Game of Life as a C learning exercise.
    - or `brew install sdl2 ` on macOS
 2. `make run`
 
+## Commands
 
+Press:
+- Space to advance
+- Tab to randomize the board
 
 ## License
 
