@@ -4,11 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "game_engine.h"
 #include "metadata_definitions.h"
 #include "render.h"
 
-void set_cells_to_dead(uint8_t cells[HEIGHT][WIDTH]);
-void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio);
 void cap_fps(uint32_t frame_beginning_tick, int target_fps);
 void init_SDL(const int width,
               const int height,
@@ -78,28 +77,6 @@ int main(void) {
   SDL_DestroyWindow(window);
   SDL_Quit();
   return EXIT_SUCCESS;
-}
-
-void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio) {
-  float random_number;
-  for (int row = 0; row < HEIGHT; row++) {
-    for (int col = 0; col < WIDTH; col++) {
-      random_number = (rand() % 100) / 100.;
-      if (random_number < life_ratio) {
-        cells[row][col] = ALIVE;
-      } else {
-        cells[row][col] = DEAD;
-      }
-    }
-  }
-}
-
-void set_cells_to_dead(uint8_t cells[HEIGHT][WIDTH]) {
-  for (int row = 0; row < HEIGHT; row++) {
-    for (int col = 0; col < WIDTH; col++) {
-      cells[row][col] = DEAD;
-    }
-  }
 }
 
 void cap_fps(uint32_t frame_beginning_tick, int target_fps) {
