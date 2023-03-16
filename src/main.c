@@ -29,17 +29,25 @@ int main(void) {
   Cell cells[HEIGHT][WIDTH];
   set_cells_to_dead(cells);
 
-  cells[1][0] = ALIVE;
-  cells[1][1] = ALIVE;
-  cells[1][2] = ALIVE;
+  cells[2][1] = ALIVE;
+  cells[2][2] = ALIVE;
+  cells[2][3] = ALIVE;
 
-  for (int row = 0; row < 3; row++) {
-    for (int col = 0; col < 3; col++) {
+  for (int row = 0; row < HEIGHT; row++) {
+    for (int col = 0; col < WIDTH; col++) {
       printf("cell at row %i col %i has %i neighbours\n", row, col,
              number_of_live_neighbors(cells, row, col));
       printf("Next tick it will be %s\n",
              next_cell_status(cells, row, col) == ALIVE ? "alive" : "ded");
     }
+  }
+
+  printf("\n\nnext status:\n");
+  for (int row = 0; row < HEIGHT; row++) {
+    for (int col = 0; col < WIDTH; col++) {
+      printf("%s ", next_cell_status(cells, row, col) == ALIVE ? "X" : ".");
+    }
+    printf("\n");
   }
 
   uint32_t start_tick = SDL_GetTicks();

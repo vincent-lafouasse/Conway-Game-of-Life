@@ -20,15 +20,16 @@ Cell next_cell_status(Cell cells[HEIGHT][WIDTH], int row, int col) {
 }
 
 int number_of_live_neighbors(Cell cells[HEIGHT][WIDTH], int row, int col) {
-  int neighboring_rows[] = {(row - 1) % HEIGHT, row, (row + 1) % HEIGHT};
-  int neighboring_cols[] = {(col - 1) % WIDTH, col, (col + 1) % WIDTH};
+  int neighboring_rows[] = {(row + HEIGHT - 1) % HEIGHT, row,
+                            (row + 1) % HEIGHT};
+  int neighboring_cols[] = {(col + WIDTH - 1) % WIDTH, col, (col + 1) % WIDTH};
   int n_live_neighbors = 0;
 
   for (int row_idx = 0; row_idx < 3; row_idx++) {
     for (int col_idx = 0; col_idx < 3; col_idx++) {
       int neighbor_row = neighboring_rows[row_idx];
       int neighbor_col = neighboring_cols[col_idx];
-      if (cells[neighbor_row][neighbor_col] &&
+      if (cells[neighbor_row][neighbor_col] == ALIVE &&
           !(row == neighbor_row && col == neighbor_col)) {
         n_live_neighbors++;
       }
