@@ -22,7 +22,7 @@ void set_render_color(Color color, SDL_Renderer* renderer) {
 }
 
 void render_cell(int row, int col, int pixel_size, SDL_Renderer* renderer) {
-  SDL_Rect cell_rect = {row * pixel_size, col * pixel_size, pixel_size,
+  SDL_Rect cell_rect = {col * pixel_size, row * pixel_size, pixel_size,
                         pixel_size};
   SDL_RenderFillRect(renderer, &cell_rect);
 }
