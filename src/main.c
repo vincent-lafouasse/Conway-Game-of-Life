@@ -28,6 +28,7 @@ int main(void) {
   Cell cells[HEIGHT][WIDTH];
   Cell buffer[HEIGHT][WIDTH];
   set_cells_to_dead(cells);
+  float life_ratio = 0.3;
 
   cells[2][1] = ALIVE;
   cells[2][2] = ALIVE;
@@ -47,6 +48,10 @@ int main(void) {
         switch (event.key.keysym.sym) {
           case SDLK_SPACE: {
             advance_to_next_state(cells, buffer);
+            break;
+          }
+          case SDLK_TAB: {
+            randomize_cells(cells, life_ratio);
             break;
           }
           default:
