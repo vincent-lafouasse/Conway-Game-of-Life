@@ -33,6 +33,15 @@ int main(void) {
   cells[1][1] = ALIVE;
   cells[1][2] = ALIVE;
 
+  for (int row = 0; row < 3; row++) {
+    for (int col = 0; col < 3; col++) {
+      printf("cell at row %i col %i has %i neighbours\n", row, col,
+             number_of_live_neighbors(cells, row, col));
+      printf("Next tick it will be %s\n",
+             next_cell_status(cells, row, col) == ALIVE ? "alive" : "ded");
+    }
+  }
+
   uint32_t start_tick = SDL_GetTicks();
   uint32_t current_tick;
   uint32_t frame_beginning_tick;
@@ -60,8 +69,6 @@ int main(void) {
     if ((current_tick - start_tick) % MS_PER_TICK != 0) {
       continue;
     }
-
-    SDL_Log("a frame is passing");
 
     set_render_color(BLACK, renderer);
     SDL_RenderClear(renderer);
