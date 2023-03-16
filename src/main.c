@@ -30,6 +30,7 @@ int main(void) {
   set_cells_to_dead(cells);
   float life_ratio = 0.5;
 
+  // A glider
   cells[0][0] = ALIVE;
   cells[0][2] = ALIVE;
   cells[1][1] = ALIVE;
