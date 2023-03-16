@@ -2,6 +2,15 @@
 
 An implementation of Conway's Game of Life as a C learning exercise.
 
+## Build and run
+
+1. Install the SDL2 library:
+   - `sudo apt-get install libsdl2-dev -image-dev` on linux, debian-based distributions
+   - or `brew install sdl2 ` on macOS
+2. `make run`
+
+
+
 ## License
 
 ```
