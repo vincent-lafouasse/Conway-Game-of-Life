@@ -27,7 +27,7 @@ void render_cell(int row, int col, int pixel_size, SDL_Renderer* renderer) {
   SDL_RenderFillRect(renderer, &cell_rect);
 }
 
-void render_cells(uint8_t cells[HEIGHT][WIDTH],
+void render_cells(Cell cells[HEIGHT][WIDTH],
                   int pixel_size,
                   SDL_Renderer* renderer) {
   for (int row = 0; row < HEIGHT; row++) {

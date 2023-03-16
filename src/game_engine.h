@@ -4,5 +4,7 @@
 #include <stdlib.h>
 #include "metadata_definitions.h"
 
-void set_cells_to_dead(uint8_t cells[HEIGHT][WIDTH]);
-void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio);
+typedef enum {DEAD = 0, ALIVE = 1} Cell;
+
+void set_cells_to_dead(Cell cells[HEIGHT][WIDTH]);
+void randomize_cells(Cell cells[HEIGHT][WIDTH], float life_ratio);

@@ -1,6 +1,6 @@
 #include "game_engine.h"
 
-void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio) {
+void randomize_cells(Cell cells[HEIGHT][WIDTH], float life_ratio) {
   float random_number;
   for (int row = 0; row < HEIGHT; row++) {
     for (int col = 0; col < WIDTH; col++) {
@@ -14,7 +14,7 @@ void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio) {
   }
 }
 
-void set_cells_to_dead(uint8_t cells[HEIGHT][WIDTH]) {
+void set_cells_to_dead(Cell cells[HEIGHT][WIDTH]) {
   for (int row = 0; row < HEIGHT; row++) {
     for (int col = 0; col < WIDTH; col++) {
       cells[row][col] = DEAD;

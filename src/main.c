@@ -26,7 +26,7 @@ int main(void) {
   // defined in metadata header
   init_SDL(WIDTH, HEIGHT, PIXEL_SIZE, &window, &renderer);
 
-  uint8_t cells[HEIGHT][WIDTH];
+  Cell cells[HEIGHT][WIDTH];
   set_cells_to_dead(cells);
 
   cells[1][0] = ALIVE;
