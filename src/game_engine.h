@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "metadata_definitions.h"
 
-typedef enum {DEAD = 0, ALIVE = 1} Cell;
+typedef enum {DEAD, ALIVE} Cell;
 
 void advance_to_next_state(Cell cells[HEIGHT][WIDTH], Cell buffer[HEIGHT][WIDTH]);
 Cell next_cell_status(Cell cells[HEIGHT][WIDTH], int row, int col);

@@ -16,9 +16,8 @@ void advance_to_next_state(Cell cells[HEIGHT][WIDTH],
 }
 
 Cell next_cell_status(Cell cells[HEIGHT][WIDTH], int row, int col) {
-  Cell this_cell = cells[row][col];
   int n_live_neighbors = number_of_live_neighbors(cells, row, col);
-  if (this_cell == ALIVE) {
+  if (cells[row][col] == ALIVE) {
     if (n_live_neighbors == 2 || n_live_neighbors == 3) {
       return ALIVE;
     } else {
