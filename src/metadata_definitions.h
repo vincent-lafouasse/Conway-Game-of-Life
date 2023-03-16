@@ -1,5 +1,5 @@
 #pragma once
 
-#define WIDTH 5
-#define HEIGHT 5
-#define PIXEL_SIZE 50
+#define WIDTH 15
+#define HEIGHT 15
+#define PIXEL_SIZE 20
