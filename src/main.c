@@ -7,6 +7,7 @@
 #include "metadata_definitions.h"
 #include "render.h"
 
+void reset_cells(uint8_t cells[HEIGHT][WIDTH]);
 void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio);
 void cap_fps(uint32_t frame_beginning_tick, int target_fps);
 
@@ -51,7 +52,7 @@ int main(void) {
 
   uint8_t cells[HEIGHT][WIDTH] = {DEAD};
   float life_ratio = 0.1;
-  randomize_cells(cells, life_ratio);
+  reset_cells(cells);
 
   uint32_t start_tick = SDL_GetTicks();
   uint32_t current_tick;
@@ -111,6 +112,14 @@ void randomize_cells(uint8_t cells[HEIGHT][WIDTH], float life_ratio) {
       } else {
         cells[row][col] = DEAD;
       }
+    }
+  }
+}
+
+void reset_cells(uint8_t cells[HEIGHT][WIDTH]) {
+  for (int row = 0; row < HEIGHT; row++) {
+    for (int col = 0; col < WIDTH; col++) {
+      cells[row][col] = DEAD;
     }
   }
 }
