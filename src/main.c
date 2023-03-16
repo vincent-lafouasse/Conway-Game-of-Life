@@ -28,11 +28,13 @@ int main(void) {
   Cell cells[HEIGHT][WIDTH];
   Cell buffer[HEIGHT][WIDTH];
   set_cells_to_dead(cells);
-  float life_ratio = 0.3;
+  float life_ratio = 0.5;
 
+  cells[0][0] = ALIVE;
+  cells[0][2] = ALIVE;
+  cells[1][1] = ALIVE;
+  cells[1][2] = ALIVE;
   cells[2][1] = ALIVE;
-  cells[2][2] = ALIVE;
-  cells[2][3] = ALIVE;
 
   uint32_t frame_beginning_tick;
   bool running = true;
