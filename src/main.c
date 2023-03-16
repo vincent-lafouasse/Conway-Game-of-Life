@@ -16,42 +16,23 @@ void init_SDL(const int width,
               SDL_Renderer** return_renderer);
 
 int main(void) {
-  const int MS_PER_TICK = 1000;
   const int TARGET_FPS = 20;
 
   srand(time(NULL));
 
   SDL_Window* window = NULL;
   SDL_Renderer* renderer = NULL;
-  // defined in metadata header
+  // WIDTH HEIGHT and PIXEL_SIZE defined in metadata header
   init_SDL(WIDTH, HEIGHT, PIXEL_SIZE, &window, &renderer);
 
   Cell cells[HEIGHT][WIDTH];
+  Cell buffer[HEIGHT][WIDTH];
   set_cells_to_dead(cells);
 
   cells[2][1] = ALIVE;
   cells[2][2] = ALIVE;
   cells[2][3] = ALIVE;
 
-  for (int row = 0; row < HEIGHT; row++) {
-    for (int col = 0; col < WIDTH; col++) {
-      printf("cell at row %i col %i has %i neighbours\n", row, col,
-             number_of_live_neighbors(cells, row, col));
-      printf("Next tick it will be %s\n",
-             next_cell_status(cells, row, col) == ALIVE ? "alive" : "ded");
-    }
-  }
-
-  printf("\n\nnext status:\n");
-  for (int row = 0; row < HEIGHT; row++) {
-    for (int col = 0; col < WIDTH; col++) {
-      printf("%s ", next_cell_status(cells, row, col) == ALIVE ? "X" : ".");
-    }
-    printf("\n");
-  }
-
-  uint32_t start_tick = SDL_GetTicks();
-  uint32_t current_tick;
   uint32_t frame_beginning_tick;
   bool running = true;
   while (running) {
@@ -65,17 +46,13 @@ int main(void) {
       if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
           case SDLK_SPACE: {
+            advance_to_next_state(cells, buffer);
             break;
           }
           default:
             break;
         }
       }
-    }
-
-    current_tick = SDL_GetTicks();
-    if ((current_tick - start_tick) % MS_PER_TICK != 0) {
-      continue;
     }
 
     set_render_color(BLACK, renderer);

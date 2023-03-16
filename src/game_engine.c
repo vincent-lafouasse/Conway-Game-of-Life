@@ -1,6 +1,20 @@
 #include "game_engine.h"
 #include <stdbool.h>
 
+void advance_to_next_state(Cell cells[HEIGHT][WIDTH],
+                           Cell buffer[HEIGHT][WIDTH]) {
+  for (int row = 0; row < HEIGHT; row++) {
+    for (int col = 0; col < WIDTH; col++) {
+      buffer[row][col] = next_cell_status(cells, row, col);
+    }
+  }
+  for (int row = 0; row < HEIGHT; row++) {
+    for (int col = 0; col < WIDTH; col++) {
+      cells[row][col] = buffer[row][col];
+    }
+  }
+}
+
 Cell next_cell_status(Cell cells[HEIGHT][WIDTH], int row, int col) {
   Cell this_cell = cells[row][col];
   int n_live_neighbors = number_of_live_neighbors(cells, row, col);
